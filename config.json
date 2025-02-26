@@ -1,0 +1,67 @@
+{
+    "except_list": [
+        "1",
+        "2",
+        "3"
+    ],
+    "columns": {
+        "all": [
+            "Rule Name", "Source", "User", "Destination", "Service", "Application", "Description",
+            "REQUEST_ID", "REQUEST_START_DATE", "REQUEST_END_DATE", "TITLE", "REQUESTER_ID",
+            "REQUESTER_EMAIL", "REQUESTER_NAME", "REQUESTER_DEPT", "WRITE_PERSON_ID", "WRITE_PERSON_EMAIL",
+            "WRITE_PERSON_NAME", "WRITE_PERSON_DEPT", "APPROVAL_PERSON_ID", "APPROVAL_PERSON_EMAIL",
+            "APPROVAL_PERSON_NAME", "APPROVAL_PERSON_DEPT_NAME"
+        ],
+        "no_history": [
+            "Rule Name", "Source", "User", "Destination", "Service", "Application", "Description"
+        ],
+        "date_columns": [
+            "REQUEST_START_DATE", "REQUEST_END_DATE"
+        ]
+    },
+    "translated_columns": {
+        "REQUEST_ID": "GSAMS 신청번호",
+        "REQUEST_START_DATE": "시작일",
+        "REQUEST_END_DATE": "종료일",
+        "TITLE": "제목",
+        "REQUESTER_ID": "신청자 ID",
+        "REQUESTER_EMAIL": "신청자 이메일",
+        "REQUESTER_NAME": "신청자명",
+        "REQUEST_DEPT": "신청자 부서",
+        "WRITE_PERSON_ID": "기안자 ID",
+        "WRITE_PERSON_EMAIL": "기안자 이메일",
+        "WRITE_PERSON_NAME": "기안자명",
+        "WRITE_PERSON_DEPT": "기안자 부서",
+        "APPROVAL_PERSON_ID": "결재자 ID",
+        "APPROVAL_PERSON_EMAIL": "결재자 이메일",
+        "APPROVAL_PERSON_NAME": "결재자명",
+        "APPROVAL_PERSON_DEPT": "결재자 부서"
+    },
+    "patterns": {
+        "pattern_3": "MASKED",
+        "pattern_1_rulename": "MASKED",
+        "pattern_1_user": "MASKED",
+        "rulename_1_rulename": "MASKED",
+        "rulename_1_date": "MASKED"
+    },
+    "file_naming": {
+        "policy_version_format": "_v{version}",
+        "final_version_suffix": "_vf",
+        "request_id_prefix": "request_id_"
+    },
+    "timeframes": {
+        "recent_policy_days": 90
+    },
+    "excel_styling": {
+        "header_bg_color": "E0E0E0",
+        "info_bg_color": "ccffff"
+    },
+    "excel_styles": {
+        "header_fill_color": "E0E0E0",
+        "history_fill_color": "ccffff"
+    },
+    "file_extensions": {
+        "excel": ".xlsx",
+        "csv": ".csv"
+    }
+} 
