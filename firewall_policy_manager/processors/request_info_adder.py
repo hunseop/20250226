@@ -87,7 +87,7 @@ class RequestInfoAdder:
             return pd.Series()
         
         df = pd.read_excel(selected_file)
-        filtered_df = df[df['REQEUST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
+        filtered_df = df[df['REQUEST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
         
         logger.info(f"자동 연장 ID {len(filtered_df)}개를 찾았습니다.")
         return filtered_df

@@ -476,7 +476,7 @@ class RequestInfoAdder:
             return pd.Series()
         
         df = pd.read_excel(selected_file)
-        filtered_df = df[df['REQEUST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
+        filtered_df = df[df['REQUEST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
         
         return filtered_df
     

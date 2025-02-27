@@ -435,7 +435,7 @@ def find_auto_extension_id():
     print('가공된 신청정보 파일을 선택')
     selected_file = select_xlsx_files()
     df = pd.read_excel(selected_file)
-    filtered_df = df[df['REQEUST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
+    filtered_df = df[df['REQUEST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
 
     return filtered_df
 
