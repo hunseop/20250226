@@ -7,6 +7,7 @@
 
 import logging
 import pandas as pd
+from firewall_policy_manager.utils.request_utils import RequestUtils
 
 logger = logging.getLogger(__name__)
 
@@ -71,27 +72,6 @@ class RequestInfoAdder:
         
         print()  # 줄바꿈
     
-    def find_auto_extension_id(self, file_manager):
-        """
-        자동 연장 ID를 찾습니다.
-        
-        Args:
-            file_manager: 파일 관리자
-            
-        Returns:
-            Series: 자동 연장 ID 시리즈
-        """
-        print('가공된 신청정보 파일을 선택하세요:')
-        selected_file = file_manager.select_files()
-        if not selected_file:
-            return pd.Series()
-        
-        df = pd.read_excel(selected_file)
-        filtered_df = df[df['REQUEST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
-        
-        logger.info(f"자동 연장 ID {len(filtered_df)}개를 찾았습니다.")
-        return filtered_df
-    
     def add_request_info(self, file_manager):
         """
         파일에 신청 정보를 추가합니다.
@@ -117,7 +97,8 @@ class RequestInfoAdder:
             info_df = self.read_and_process_excel(info_file)
             info_df = info_df.sort_values(by='REQUEST_END_DATE', ascending=False)
             
-            auto_extension_id = self.find_auto_extension_id(file_manager)
+            # 동일한 정보 파일에서 자동 연장 ID 찾기
+            auto_extension_id = RequestUtils.find_auto_extension_id(info_df)
             
             self.match_and_update_df(rule_df, info_df)
             rule_df.replace({'nan': None}, inplace=True)

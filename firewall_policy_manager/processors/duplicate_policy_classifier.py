@@ -8,6 +8,7 @@
 import logging
 import pandas as pd
 import os
+from firewall_policy_manager.utils.request_utils import RequestUtils
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +51,7 @@ class DuplicatePolicyClassifier:
                 return False
             
             info_df = pd.read_excel(info_file)
-            auto_extension_id = info_df[info_df['REQUEST_STATUS'].isin([98, 99])]['REQUEST_ID'].drop_duplicates()
+            auto_extension_id = RequestUtils.find_auto_extension_id(info_df)
             
             # 중복정책 파일 로드
             df = pd.read_excel(selected_file)
