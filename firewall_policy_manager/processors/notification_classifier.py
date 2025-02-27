@@ -88,6 +88,12 @@ class NotificationClassifier:
             except Exception as e:
                 logger.error(f"이력없는 미사용 분류 실패: {e}")
             
+            # 원본 파일도 최종 버전으로 저장
+            final_file = file_manager.update_version(selected_file, final_version=True)
+            df.to_excel(final_file, index=False)
+            logger.info(f"최종 정책 파일을 '{final_file}'에 저장했습니다.")
+            print(f"최종 정책 파일이 '{final_file}'에 저장되었습니다.")
+            
             logger.info("정책 분류 완료")
             print("정책 분류가 완료되었습니다.")
             return True

@@ -215,8 +215,8 @@ class DuplicatePolicyClassifier:
                     policy_df.at[idx, '중복여부'] = duplicate_map[rule_name]
                     updated_count += 1
             
-            # 결과 저장
-            output_file = file_manager.update_version(policy_file)
+            # 결과 저장 (최종 버전으로 저장)
+            output_file = file_manager.update_version(policy_file, final_version=True)
             policy_df.to_excel(output_file, index=False, engine='openpyxl')
             
             logger.info(f"중복여부 정보가 추가된 파일을 '{output_file}'에 저장했습니다.")
