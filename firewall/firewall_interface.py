@@ -1,6 +1,7 @@
 # firewall/firewall_interface.py
 from abc import ABC, abstractmethod
 import pandas as pd
+from typing import Optional
 
 class FirewallInterface(ABC):
     @abstractmethod
@@ -42,5 +43,15 @@ class FirewallInterface(ABC):
         """서비스 그룹 객체 정보를 DataFrame으로 반환합니다.
         Returns:
             pd.DataFrame: Group Name, Entry 컬럼을 가진 DataFrame
+        """
+        pass
+
+    @abstractmethod
+    def export_usage_logs(self, days: Optional[int] = None) -> pd.DataFrame:
+        """정책 사용이력을 DataFrame으로 반환합니다.
+        Args:
+            days: 조회할 기간 (일), None인 경우 전체 기간
+        Returns:
+            pd.DataFrame: Rule Name, Last Hit Date, Unused Days 컬럼을 가진 DataFrame
         """
         pass

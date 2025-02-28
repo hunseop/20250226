@@ -1,5 +1,6 @@
 # firewall/mf2/mf2_collector.py
 import pandas as pd
+from typing import Optional
 from firewall.firewall_interface import FirewallInterface
 from .mf2_module import show_system_info, export_security_rules, download_object_files, host_parsing, network_parsing, combine_mask_end, delete_files, export_address_objects, service_parsing
 import os
@@ -83,3 +84,19 @@ class MF2Collector(FirewallInterface):
         """서비스 그룹 객체 정보를 PaloAlto 형식으로 변환하여 반환합니다."""
         # MF2는 서비스 그룹 기능이 없으므로 빈 DataFrame 반환
         return pd.DataFrame(columns=['Group Name', 'Entry'])
+
+    def export_usage_logs(self, days: Optional[int] = None) -> pd.DataFrame:
+        """정책 사용이력을 DataFrame으로 반환합니다.
+        
+        Args:
+            days: 미사용 기준 일수 (예: 30일 이상 미사용 시 '미사용'으로 표시)
+            
+        Returns:
+            pd.DataFrame: Rule Name, Last Hit Date, Unused Days, 미사용여부 컬럼을 가진 DataFrame
+            
+        Note:
+            MF2 방화벽은 정책 사용이력 정보를 제공하지 않으므로 빈 DataFrame을 반환합니다.
+            모든 정책은 '미사용'으로 표시됩니다.
+        """
+        # MF2는 정책 사용이력 기능이 없으므로 빈 DataFrame 반환
+        return pd.DataFrame(columns=['Rule Name', 'Last Hit Date', 'Unused Days', '미사용여부'])

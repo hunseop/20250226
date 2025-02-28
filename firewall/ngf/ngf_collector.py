@@ -1,5 +1,7 @@
 # firewall/ngf/ngf_collector.py
 import pandas as pd
+from typing import Optional
+from datetime import datetime, timedelta
 from firewall.firewall_interface import FirewallInterface
 from .ngf_module import NGFClient
 
@@ -92,3 +94,52 @@ class NGFCollector(FirewallInterface):
     def export_service_group_objects(self) -> pd.DataFrame:
         """서비스 그룹 객체 정보를 멤버 정보와 함께 반환합니다."""
         return self.client.export_service_group_objects_with_members()
+
+    def export_usage_logs(self, days: Optional[int] = None) -> pd.DataFrame:
+        """정책 사용이력을 DataFrame으로 반환합니다.
+        
+        Args:
+            days: 미사용 기준 일수 (예: 30일 이상 미사용 시 '미사용'으로 표시)
+            
+        Returns:
+            pd.DataFrame: Rule Name, Last Hit Date, Unused Days, 미사용여부 컬럼을 가진 DataFrame
+        """
+        # 보안 규칙 데이터 가져오기
+        security_rules = self.export_security_rules()
+        
+        # 필요한 컬럼만 선택
+        if not security_rules.empty and 'Last Hit Date' in security_rules.columns:
+            result_df = security_rules[['Rule Name', 'Last Hit Date']]
+            
+            # 현재 날짜 가져오기
+            current_date = datetime.now()
+            
+            # Unused Days 계산
+            def calculate_unused_days(last_hit_date):
+                if pd.isna(last_hit_date) or not last_hit_date:
+                    return None  # 사용 기록이 없는 경우
+                try:
+                    # NGF의 last_hit_time 형식에 맞게 파싱
+                    last_hit_datetime = datetime.strptime(last_hit_date, '%Y-%m-%d %H:%M:%S')
+                    delta = current_date - last_hit_datetime
+                    return delta.days
+                except (ValueError, TypeError):
+                    return None
+            
+            # Unused Days 컬럼 추가
+            result_df['Unused Days'] = result_df['Last Hit Date'].apply(calculate_unused_days)
+            
+            # 미사용여부 컬럼 추가
+            def determine_usage_status(unused_days):
+                if pd.isna(unused_days):
+                    return '미사용'  # 사용 기록이 없는 경우
+                if days is not None and unused_days > days:
+                    return '미사용'  # 기준일 이상 미사용
+                return '사용'  # 기준일 이내 사용
+            
+            result_df['미사용여부'] = result_df['Unused Days'].apply(determine_usage_status)
+            
+            return result_df
+        
+        # 데이터가 없거나 Last Hit Date 컬럼이 없는 경우 빈 DataFrame 반환
+        return pd.DataFrame(columns=['Rule Name', 'Last Hit Date', 'Unused Days', '미사용여부'])
